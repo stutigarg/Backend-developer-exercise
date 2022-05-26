@@ -8,7 +8,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "SURVIVOR")
-
+@lombok.Getter
+@lombok.Setter
+@lombok.NoArgsConstructor
 public class Survivor implements Serializable {
 
     public static final long serialVersionUID = -6588913283847200032L;
@@ -20,7 +22,7 @@ public class Survivor implements Serializable {
 
 
     private String name;
-    private String age;
+    private int age;
     private String gender;
     private double latitude;
     private double longitude;
@@ -29,13 +31,13 @@ public class Survivor implements Serializable {
     private List<Resources> resources ;
 
     @ManyToMany(cascade={CascadeType.ALL})
-    @JoinTable(name="CONTAMINATION",
+    @JoinTable(name="CONTAMINATION_DETAILS",
             joinColumns={@JoinColumn(name="SURVIVOR_ID")},
             inverseJoinColumns={@JoinColumn(name="CONTAMINATED_ID")})
     private Set<Survivor> contaminated = new HashSet<Survivor>();
 
     @ManyToMany(mappedBy="contaminated")
-    private Set<Survivor> teammates = new HashSet<Survivor>();
+    private Set<Survivor> survivors = new HashSet<Survivor>();
 
 
 
