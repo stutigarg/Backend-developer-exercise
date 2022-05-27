@@ -1,6 +1,12 @@
 package com.assignment.ioco.entity;
 
+import com.assignment.ioco.domain.base.LocatableEntity;
+
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
@@ -11,9 +17,14 @@ import java.util.Set;
 @lombok.Getter
 @lombok.Setter
 @lombok.NoArgsConstructor
-public class Survivor implements Serializable {
+public class Survivor extends LocatableEntity implements Serializable {
+    private static final long serialVersionUID = -6588913283847200032L;
 
-    public static final long serialVersionUID = -6588913283847200032L;
+    public enum Gender {
+        MALE,
+        FEMALE,
+        UNKNOWN
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ID_SURVIVOR")
@@ -21,23 +32,18 @@ public class Survivor implements Serializable {
     private long id;
 
 
-    private String name;
-    private int age;
-    private String gender;
-    private double latitude;
-    private double longitude;
+    @NotBlank private String name;
+    @Positive private int age;
+    @NotNull private Gender gender;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "survivor")
-    private List<Resources> resources ;
+    private List<Resource> resources ;
 
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="CONTAMINATION_DETAILS",
             joinColumns={@JoinColumn(name="SURVIVOR_ID")},
             inverseJoinColumns={@JoinColumn(name="CONTAMINATED_ID")})
-    private Set<Survivor> contaminated = new HashSet<Survivor>();
-
-    @ManyToMany(mappedBy="contaminated")
-    private Set<Survivor> survivors = new HashSet<Survivor>();
+    private Set<Survivor> contaminated = new HashSet<>();
 
 
 

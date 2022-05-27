@@ -1,7 +1,7 @@
 package com.assignment.ioco.service.impl;
 
 import com.assignment.ioco.entity.Survivor;
-import com.assignment.ioco.payload.request.SurvivorRequest;
+import com.assignment.ioco.model.SurvivorModel;
 import com.assignment.ioco.repository.SurvivorRepository;
 import com.assignment.ioco.service.SurvivorService;
 import com.assignment.ioco.service.mapper.SurvivorMapper;
@@ -22,7 +22,7 @@ public class SurvivorServiceImpl implements SurvivorService {
 
     @Override
     @Transactional
-    public void saveSurvivor(SurvivorRequest request) {
+    public void saveSurvivor(SurvivorModel request) {
         Survivor survivor = new Survivor();
         survivorMapper.merge(request, survivor);
         survivorRepository.save(survivor);
